@@ -1,0 +1,102 @@
+.submit_button
+			{ background:#25A6E1;
+			background:-moz-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+			background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#25A6E1),color-stop(100%,#188BC0));
+			background:-webkit-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+			background:-o-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+			background:-ms-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+			background:linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+			filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#25A6E1",endColorstr="#188BC0",GradientType=0);
+			padding:1px 13px;
+			color:#ffffff !important;
+			 border-radius: 4px !important; border: 1px solid #1A87B9 !important;
+			font-family:"Helvetica Neue",sans-serif;
+			font-size:13px;
+			cursor:pointer;height: 25px;
+			}
+#system_notice_area_dismiss{
+color: #FFFFFF;
+cursor: pointer;
+z-index:100000;
+}
+.system_notice_area_style1 {
+	background: #00C348;
+	border: 1px solid green;
+	z-index:100000;
+}
+
+.system_notice_area_style0 {
+	background: #FA5A6A;
+	border: 1px solid brown;
+	z-index:100000;
+}
+
+.meta-style
+    {
+        color:#23282d;
+        font-size: 14px;
+    }
+
+#system_notice_area {
+	position: fixed;
+	margin-bottom:40px;
+	left:25%;
+	width:50%;
+	height:20px;
+	border-radius:5px;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	font-weight:bold;
+	display:none;
+	padding:3px;
+	color: #000000;
+	text-align: center;
+	top: 0px;
+	z-index: 100000;
+
+
+	}
+	td{
+	font-size:12px;
+}
+
+.mandatory { color:red}
+select {
+    border: 1px solid #DDDDDD;
+    border-radius: 4px 4px 4px 4px;
+	-moz- border-radius: 4px 4px 4px 4px;
+	-webkit- border-radius: 4px 4px 4px 4px;
+	-o-border-radius: 4px 4px 4px 4px;
+	background-color: #ECECEC;
+}
+   
+
+	img.help_tip {
+    vertical-align: middle;
+    margin: 0 0 0 9px;
+}
+.postbox img.help_tip {
+    margin-top: -4px;
+}
+#postimagediv img {
+    border: 1px solid #d5d5d5;
+    max-width: 100%}
+
+
+a {
+	text-decoration: none;
+}
+.title_div {
+    float: left;
+    width: 100%;
+}
+
+.title_div > a {
+    color: rgb(255, 0, 0);
+    float: left;
+    font-size: 12px;
+    text-align: center;
+    width: 100%;
+}
+/*footer*/
+

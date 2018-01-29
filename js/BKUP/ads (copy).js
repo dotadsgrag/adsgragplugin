@@ -1,0 +1,317 @@
+	var ip = countryName = countryCode = language = os = "";
+	var src=document.getElementById("site_id").src;
+	var adtype = src.split("adtype=")[1];
+	var position = src.split("position=")[1];
+	position = position.split("&")[0];
+	var params=src.split("siteId=")[1];
+	var siteId = params.split("&")[0];
+	var wp = src.split("wp=")[1];
+	var layout = 1;
+	var clickUrl = "";
+
+    $.ajax({
+        type: "GET",
+        dataType: 'text',
+        url: "https://adsgrag.com/Beta1.0/adsgrag1.0/forms/user/validUserTest.php",
+        //url: "http://localhost/adsgrag1.0/forms/user/validUserTest.php",
+        success: function(res) {
+		    if(res == "bot"){
+		    	alert("This user is bot.");
+		    }
+        },
+        async: false
+    });
+
+	if(adtype == "POP"){
+	    $.ajax({
+	        type: "GET",
+	        dataType: 'text',
+	        //url: "http://localhost/adsgrag1.0/forms/user/ad-display.php?siteId="+siteId,
+	        url: "https://adsgrag.com/Beta1.0/adsgrag1.0/forms/user/ad-display.php?siteId="+siteId,
+	        success: function(clickurl) {
+			    if(clickurl){
+			    	clickUrl = clickurl;
+			    }
+	        },
+	        async: false
+	    });
+	    if(clickUrl){
+		    var poptype = clickUrl.split(" & ")[1];
+		    var siteurl = clickUrl.split(" & ")[0];
+			if(poptype == -1){
+				TheNewWin =window.open(siteurl,'TheNewpop','toolbar=1,location=1,directories=1,status=1,menubar=1,scrollbars=1,resizable=1'); 
+				TheNewWin.blur();
+				//window.focus();
+			} else if(poptype == 1) {
+				window.open(siteurl,'NewWin','toolbar=no,status=no,width=640,height=480');
+			} else if(poptype == 0){
+				var win = window.open(siteurl,'_blank');
+				win.focus();
+			}
+		}
+	} else {
+	    $.ajax({
+	        type: "GET",
+	        dataType: 'json',
+	        url: "https://adsgrag.com/Beta1.0/adsgrag1.0/forms/advertiser/ads.php?siteId="+siteId,
+	        //url: "http://localhost/adsgrag1.0/forms/advertiser/ads.php?siteId="+siteId,
+	        success: function(data) {
+			    if(data){
+			    	layout = data;
+			    }
+	        },
+	        async: false
+	    });
+		var request = new XMLHttpRequest();
+		request.open('GET', '//freegeoip.net/json/?callback=', false);
+		request.send(null);
+		if (request.status === 200) { 
+		  	data =  request.responseText;
+		  	var jsonResponse = JSON.parse(data);
+		  	ip = jsonResponse["ip"];
+		  	countryName = jsonResponse["country_name"];
+		  	countryCode = jsonResponse["country_code"];
+		  	language = navigator.languages[1];
+		}
+		os = getOS();
+
+		var head = document.getElementsByTagName('head')[0];
+	    var link  = document.createElement('link');
+	    link.rel  = 'stylesheet';
+	    link.type = 'text/css';
+	    //link.href = 'http://localhost/adsgrag1.0/common/css/bootstrap.min.css';
+	    link.href = 'https://adsgrag.com/Beta1.0/adsgrag1.0/common/css/bootstrap.min.css';
+	    link.media = 'all';
+	    head.appendChild(link);
+
+		divadp = document.createElement('div');
+		//document.body.appendChild(divadp);
+		if(position == "top"){
+		    if($("header") && $("header")[0])
+		    {
+		        $("header")[0].appendChild(divadp);
+			}
+            else {
+		        document.body.prepend(divadp);
+			}
+		} else if(position == "bottom") {
+			
+		    if($("header") && $("header").parent()[0])
+		    { //alert(divcontiner);
+				var list = document.getElementById(divcontiner);
+			list.appendChild(divadp);
+		  }
+            else 
+            {
+		        document.body.appendChild(divadp);
+			}
+		} else if(position == "append") {
+            if (document.getElementsByClassName("footer-widget widget_adsg_widget")[0]){
+                // Do something if class exists
+                document.getElementsByClassName("footer-widget widget_adsg_widget")[0].appendChild(divadp);
+            } else if (document.getElementsByClassName("header-widget widget_adsg_widget")[0]){
+                // Do something if class does not exist
+                document.getElementsByClassName("header-widget widget_adsg_widget")[0].appendChild(divadp);
+            } else {
+            	document.getElementsByClassName("widget widget_adsg_widget")[0].appendChild(divadp);
+            }
+		}
+		var detail_data = 'mainadspanel_'+divcontiner;
+		divadp.id = 'mainadspanel_'+divcontiner;
+		divadp.style.margin='15px auto';
+		divadp.style.backgroundColor='#FFFFFF';
+		divadp.style.maxWidth = "1000px"; 
+		
+		
+		divrow = document.createElement('div');
+		document.getElementById(detail_data).appendChild(divrow);
+		divrow.className = 'row';
+		var dsf = 'row_'+divcontiner;
+		divrow.id = 'row_'+divcontiner;
+		divrow.style.margin='0';
+		
+		
+		divcol = document.createElement('div');
+		document.getElementById(dsf).appendChild(divcol);
+		divcol.className = 'col-sm-12';
+		divcol.id = 'col';
+		divcol.style.backgroundColor='#001f3f';
+		divcol.style.marginBottom = "50px";
+		divcol.style.color = "hsl(210, 95.5%, 73.7%)";
+		var test = 'mainadspanel_'+divcontiner;
+		var div_child = document.getElementById(test).children; 
+
+		h2 = document.createElement('h2');
+		div_child[0].appendChild(h2);
+		//document.getElementById('col').appendChild(h2);
+		h2.innerHTML = 'Our ads';
+
+	    $.ajax({
+	        type: "GET",
+	        dataType: 'json',
+	        //url: "http://localhost/adsgrag1.0/forms/advertiser/ads.php?lang="+language+"&ctcode="+countryCode+"&browser="+browserName+"&os="+os+"&layout="+layout,
+	        url: "https://adsgrag.com/Beta1.0/adsgrag1.0/forms/advertiser/ads.php?lang="+language+"&ctcode="+countryCode+"&browser="+browserName+"&os="+os+"&layout="+layout,
+	        success: function(data) {
+			    if(data){
+				    for (var i = 0; i < data.length; i++) {
+				    	var ad = data[i];
+				    	if(layout == 1 && i == 6)
+				    		break;
+				    	if(layout == 2 && i == 8)
+				    		break;
+				    	makePage(ad,layout);
+				    };
+
+				    var credittext = "";
+				    $.ajax({
+				        type: "GET",
+				        dataType: 'text',
+				        //url: "http://localhost/adsgrag1.0/forms/advertiser/getCredittext.php",
+				        url: "https://adsgrag.com/Beta1.0/adsgrag1.0/forms/advertiser/getCredittext.php",
+				        success: function(dt) {
+						    if(dt){
+						    	credittext = dt;
+						    }
+				        },
+				        async: false
+				    });
+
+					divcredit = document.createElement('div');
+					divcredit.id = 'credit';
+					divcredit.style.display = 'block';
+					divcredit.style.float = 'left';
+					divcredit.style.height = '20px';
+					divcredit.style.width = '20px';
+					divcredit.style.fontSize = '12';
+					divcredit.style.fontWeight = "normal";
+					divcredit.style.backgroundColor = '#888888';
+					divcredit.style.color = '#FFFFFF';
+					divcredit.style.textAlign = 'center';
+					divcredit.style.verticalAlign = 'middle';
+					divcredit.style.position = 'relative';
+					divcredit.style.bottom = '0px';
+					divcredit.style.left = '0px';
+					divcredit.innerHTML = 'i';
+
+					var offset = $('#row').offset();
+					var height = $('#row').height();
+					var width = $('#row').width();
+					var top = offset.top + height + "px";
+					var right = offset.left + width + "px";
+
+					$('#credit').css( {
+					    'position': 'absolute',
+					    'right': right,
+					    'top': top
+					});
+					acredittext = document.createElement('a');
+                	acredittext.href="http://adsgrag.com/";
+                	acredittext.target="_blank";
+	                acredittext.id="credittexlink";
+                	document.getElementById('row').appendChild(acredittext);
+					document.getElementById('credittexlink').appendChild(divcredit);
+					document.getElementById("credit").onmouseover = function(){
+						if($('#credit').html() == "i"){
+							$('#credit').html(credittext);
+						} else if($('#credit').html() == credittext){
+							$('#credit').html("i");
+						}
+						var length =($('#credit').html().length+1)*8+'px';
+						$('#credit').css('width',length);
+					}
+			    }
+	        },
+	        async: false
+	    });
+	}
+
+function updateStats(adid, language, browserName, siteId, os, ip, wp, action){
+	var res = false;
+	if(action == "clicked"){
+	    $.ajax({
+	        type: "GET",
+	        dataType: 'json',
+			//url: "http://localhost/adsgrag1.0/forms/user/updateStats.php?adId="+adid+"&lang="+language+"&browser="+browserName+"&siteId="+siteId+"&os="+os+"&ip="+ip+"&action=clicked",
+	        url: "https://adsgrag.com/Beta1.0/adsgrag1.0/forms/user/updateStats.php?adId="+adid+"&lang="+language+"&browser="+browserName+"&siteId="+siteId+"&os="+os+"&ip="+ip+"&wp="+wp+"&action=clicked",
+	        success: function(data) {
+	        	console.log(data);
+	        },
+		    async: false
+	    });
+	} else {
+	    $.ajax({
+	        type: "GET",
+	        dataType: 'json',
+			//url: "http://localhost/adsgrag1.0/forms/user/updateStats.php?adId="+adid+"&lang="+language+"&browser="+browserName+"&siteId="+siteId+"&os="+os+"&ip="+ip+"&action=clicked",
+	        url: "https://adsgrag.com/Beta1.0/adsgrag1.0/forms/user/updateStats.php?adId="+adid+"&lang="+language+"&browser="+browserName+"&siteId="+siteId+"&os="+os+"&ip="+ip+"&wp="+wp+"&action=added",
+	        success: function(data) {
+	        	console.log(data);
+	        },
+		    async: false
+	    });
+	}
+}
+
+function makePage(ad,layout){
+	var detail_data = 'mainadspanel_'+divcontiner;
+	divrow1 = document.createElement('div');
+	//document.getElementById(detail_data).appendChild(divrow1);
+	//divrow1.className = 'row';
+	//divrow1.id = 'row';
+	var shfd = 'row_'+divcontiner;
+	var col_ids ='col_'+divcontiner;
+	divcol1 = document.createElement('div');
+	document.getElementById(shfd).appendChild(divcol1);
+	if(layout == 1)
+		divcol1.className = 'col-lg-4 col-md-4 col-sm-6 col-xs-12';
+	else
+		divcol1.className = 'col-sm-3';
+	divcol1.id = col_ids+ad[0];
+	divcol1.style.textAlign = 'center';
+
+	img1 = document.createElement('img');
+	document.getElementById(col_ids+ad[0]).appendChild(img1);
+
+	var imagesrc = 'https://adsgrag.com/Beta1.0/adsgrag1.0/pub_sites_logo/76698.jpg';
+    $.ajax({
+        type: "GET",
+        dataType: 'text',
+        //url: "http://localhost/adsgrag1.0/forms/advertiser/getCredittext.php",
+        url: "https://adsgrag.com/Beta1.0/adsgrag1.0/forms/advertiser/getadImage.php?adId="+ad[0],
+        success: function(dt) {
+		    if(dt){
+		    	imagesrc = 'https://adsgrag.com/Beta1.0/adsgrag1.0/ad_banner/'+dt;
+		    }
+        },
+        async: false
+    });
+
+	img1.src=imagesrc;
+	img1.style.height='200px';
+	/*if(layout == 1)
+		img1.style.margin='0px 40px';*/
+	img1.style.width='230px';
+	img1.style.backgroundColor='#CCCCCC';
+
+	divtitle1 = document.createElement('div');
+	document.getElementById(col_ids+ad[0]).appendChild(divtitle1);
+	var title_ids = 'title_'+divcontiner;
+	divtitle1.id = title_ids + ad[0];
+	divtitle1.style.textAlign ='center';
+	divtitle1.style.margin ='10px 0';
+	divtitle1.style.height ='20px';
+
+	atitle1 = document.createElement('a');
+	document.getElementById(title_ids+ad[0]).appendChild(atitle1);
+	atitle1.innerHTML = ad[6];
+	atitle1.href=ad[6];
+	//atitle1.target="_blank";
+	atitle1.target="#";
+	atitle1.color="#39CCCC";
+	atitle1.id="a"+ad[0];
+
+	updateStats(ad[0], language, browserName, siteId, os, ip, wp, "added");
+	document.getElementById("a"+ad[0]).onclick = function() {
+		updateStats(ad[0], language, browserName, siteId, os, ip, wp, "clicked");
+	};
+}
